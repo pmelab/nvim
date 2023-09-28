@@ -1,5 +1,13 @@
 return {
   {
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      ensure_installed = {
+        'graphql'
+      },
+    },
+  },
+  {
     "LazyVim/LazyVim",
     opts = {
       colorscheme = "catppuccin-mocha",
