@@ -1,12 +1,10 @@
+local util = require("lspconfig/util")
+
+local function silverback_drupal_root()
+  return "/Users/pmelab/Code/silverback-mono/apps/silverback-drupal"
+end
+
 return {
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = {
-        'graphql'
-      },
-    },
-  },
   {
     "LazyVim/LazyVim",
     opts = {
@@ -53,14 +51,16 @@ return {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
-        "shellcheck",
         "graphql-language-service-cli",
       },
     },
   },
   {
     "nvim-neotest/neotest",
-    dependencies = { "marilari88/neotest-vitest" },
+    dependencies = {
+      "marilari88/neotest-vitest",
+      "olimorris/neotest-phpunit",
+    },
     keys = {
       {
         "<leader>tl",
@@ -70,15 +70,29 @@ return {
         desc = "Run last test",
       },
     },
-    opts = function(_, opts)
-      table.insert(opts.adapters, require("neotest-vitest"))
-    end,
+    opts = {
+      adapters = {
+        "neotest-vitest",
+        ["neotest-phpunit"] = {
+          root_files = { ".phpactor.json" },
+          phpunit_cmd = function()
+            return {
+              silverback_drupal_root() .. "/vendor/bin/phpunit",
+              "-c",
+              silverback_drupal_root() .. "/phpunit.xml.dist",
+            }
+          end,
+        },
+      },
+    },
   },
   {
     "nvim-treesitter/nvim-treesitter",
     opts = {
       ensure_installed = {
         "http",
+        "graphql",
+        "php",
       },
     },
   },
@@ -127,5 +141,17 @@ return {
         yank_dry_run = true,
       })
     end,
+  },
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        phpactor = {
+          root_dir = function()
+            return silverback_drupal_root()
+          end,
+        },
+      },
+    },
   },
 }
