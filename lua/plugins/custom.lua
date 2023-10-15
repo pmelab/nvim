@@ -1,6 +1,13 @@
 local util = require("lspconfig/util")
 
-local function silverback_drupal_root()
+local function silverback_drupal_root(cwd)
+  local root = util.root_pattern({ ".git" })(cwd)
+  if vim.fn.filereadable(root .. "/apps/silverback-drupal/composer.json") then
+    return root .. "/apps/silverback-drupal"
+  end
+  if vim.fn.filereadable(root .. "/apps/website/composer.json") then
+    return root .. "/apps/website"
+  end
   return "/Users/pmelab/Code/silverback-mono/apps/silverback-drupal"
 end
 
@@ -148,8 +155,8 @@ return {
     opts = {
       servers = {
         phpactor = {
-          root_dir = function()
-            return silverback_drupal_root()
+          root_dir = function(cwd)
+            return silverback_drupal_root(cwd)
           end,
         },
       },
