@@ -52,6 +52,7 @@ return {
     opts = {
       ensure_installed = {
         "graphql-language-service-cli",
+        "php-debug-adapter",
       },
     },
   },
@@ -74,7 +75,7 @@ return {
       adapters = {
         "neotest-vitest",
         ["neotest-phpunit"] = {
-          root_files = { ".phpactor.json" },
+          root_files = { ".git" },
           phpunit_cmd = function()
             return {
               silverback_drupal_root() .. "/vendor/bin/phpunit",
