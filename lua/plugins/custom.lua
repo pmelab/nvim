@@ -1,11 +1,11 @@
 local util = require("lspconfig/util")
 
 local function silverback_drupal_root(cwd)
-  local root = util.root_pattern({ ".git" })(cwd)
-  if vim.fn.filereadable(root .. "/apps/silverback-drupal/composer.json") then
+  local root = util.root_pattern({ "pnpm-lock.yaml" })(cwd)
+  if root and vim.fn.filereadable(root .. "/apps/silverback-drupal/composer.json") then
     return root .. "/apps/silverback-drupal"
   end
-  if vim.fn.filereadable(root .. "/apps/website/composer.json") then
+  if root and vim.fn.filereadable(root .. "/apps/website/composer.json") then
     return root .. "/apps/website"
   end
   return "/Users/pmelab/Code/silverback-mono/apps/silverback-drupal"
@@ -85,9 +85,9 @@ return {
           root_files = { ".git" },
           phpunit_cmd = function()
             return {
-              silverback_drupal_root() .. "/vendor/bin/phpunit",
+              silverback_drupal_root(vim.loop.cwd()) .. "/vendor/bin/phpunit",
               "-c",
-              silverback_drupal_root() .. "/phpunit.xml.dist",
+              silverback_drupal_root(vim.loop.cwd()) .. "/phpunit.xml.dist",
             }
           end,
         },
