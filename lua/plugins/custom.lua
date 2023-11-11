@@ -5,10 +5,13 @@ local function silverback_drupal_root(cwd)
   if root and vim.fn.filereadable(root .. "/apps/silverback-drupal/composer.json") then
     return root .. "/apps/silverback-drupal"
   end
-  if root and vim.fn.filereadable(root .. "/apps/website/composer.json") then
-    return root .. "/apps/website"
+  if root and vim.fn.filereadable(root .. "/apps/cms/composer.json") then
+    return root .. "/apps/cms"
   end
-  return "/Users/pmelab/Code/silverback-mono/apps/silverback-drupal"
+  if root then
+    return root
+  end
+  return cwd
 end
 
 return {
