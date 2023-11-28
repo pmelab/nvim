@@ -2,10 +2,10 @@ local util = require("lspconfig/util")
 
 local function silverback_drupal_root(cwd)
   local root = util.root_pattern({ "pnpm-lock.yaml" })(cwd)
-  if root and vim.fn.filereadable(root .. "/apps/silverback-drupal/composer.json") then
+  if root and vim.fn.filereadable(root .. "/apps/silverback-drupal/composer.json") == 1 then
     return root .. "/apps/silverback-drupal"
   end
-  if root and vim.fn.filereadable(root .. "/apps/cms/composer.json") then
+  if root and vim.fn.filereadable(root .. "/apps/cms/composer.json") == 1 then
     return root .. "/apps/cms"
   end
   if root then
