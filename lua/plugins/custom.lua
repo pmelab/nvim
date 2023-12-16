@@ -194,4 +194,25 @@ return {
       })
     end,
   },
+  {
+    "jay-babu/mason-nvim-dap.nvim",
+    opts = {
+      handlers = {
+        function(config)
+          require("mason-nvim-dap").default_setup(config)
+        end,
+        php = function(config)
+          config.configurations = {
+            {
+              type = "php",
+              request = "launch",
+              name = "PHP: Xdebug",
+              port = 9003,
+            },
+          }
+          require("mason-nvim-dap").default_setup(config)
+        end,
+      },
+    },
+  },
 }
